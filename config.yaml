@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mpos
+data:
+  DB_HOST: 3.6.108.152
+  DB_USER: hitesh1
+  DB_NAME: db_mpos

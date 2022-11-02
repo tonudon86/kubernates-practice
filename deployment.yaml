@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+
+ name: mpos
+ labels:
+
+   app: mpos
+
+spec:
+
+ replicas: 1
+
+ selector:
+
+   matchLabels:
+
+     app: mpos
+
+ template:
+
+   metadata:
+
+     labels:
+
+       app: mpos
+
+   spec:
+
+     containers:
+
+     - name: mpos
+
+       image: tonudon86/mpos:1.0.1
+       env:
+       - name: PORT
+         value: "3001"
+       - name: ENVIRONMENT
+         value: local
+       - name: DB_HOST
+         valueFrom:
+            configMapKeyRef:
+              name: mpos           
+              key: DB_HOST  
+       - name: DB_PASSWORD
+         valueFrom:
+            secretKeyRef:
+              name: mpos-secret           
+              key: DB_PASSWORD  
+              optional: false 
+       - name: SQL_PORT
+         value: '3306'
+       - name: DB_USER
+         valueFrom:
+            configMapKeyRef:
+              name: mpos            
+              key: DB_USER
+
+       - name : DB_NAME
+         valueFrom:
+            configMapKeyRef:
+              name: mpos           
+              key: DB_NAME 
+        
+         
+
+
+       resources:
+
+         requests:
+
+           cpu: "100m"
+
+       imagePullPolicy: IfNotPresent
+       ports:
+       - containerPort: 3001
